@@ -13,7 +13,10 @@ import java.util.List;
 public class OrderService {
 
     @Autowired
-    OrderRepository order_repo;
+    OrderRepository order_repo ;
+
+    public OrderService() {
+    }
 
     //add order
     void addOrder(Order order){

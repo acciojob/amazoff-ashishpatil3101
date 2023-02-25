@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public class OrderRepository {
+    public OrderRepository() {
+    }
 
     HashMap<String,Order> order_db =new HashMap<>();
     HashMap<String,DeliveryPartner> partner_db = new HashMap<>();
