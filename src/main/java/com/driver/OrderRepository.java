@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public class OrderRepository {
-    public OrderRepository() {
-    }
 
     HashMap<String,Order> order_db =new HashMap<>();
     HashMap<String,DeliveryPartner> partner_db = new HashMap<>();
@@ -48,14 +46,14 @@ public class OrderRepository {
 
 
         //order should be returned with an orderId.
-
+        if(!order_db.containsKey(orderId)) return null;
 
         return order_db.get(orderId);
     }
     //get partner by id
     public DeliveryPartner getPartnerById( String partnerId){
 
-
+        if(!partner_db.containsKey(partnerId)) return null;
 
         //deliveryPartner should contain the value given by partnerId
 
@@ -67,12 +65,11 @@ public class OrderRepository {
 
 
         //orderCount should denote the orders given by a partner-id
-
-        return partner_order_pair.get(partnerId).size();
+        return partner_order_pair.getOrDefault(partnerId,new ArrayList<>()).size();
     }
     //send list of order
     public List<String> getOrdersByPartnerId(@PathVariable String partnerId){
-        List<String> orders = new ArrayList<>(partner_order_pair.get(partnerId));
+        List<String> orders = new ArrayList<>(partner_order_pair.getOrDefault(partnerId,new ArrayList<>()));
 
 
 
@@ -94,11 +91,11 @@ public class OrderRepository {
     }
     //count unassgned order
     public Integer getCountOfUnassignedOrders(){
-        Integer countOfOrders = 0;
-        for(String key:order_db.keySet()){
-
-            if(isOrder_placed.containsKey(key)==false) countOfOrders +=1;
-        }
+        Integer countOfOrders = order_db.size()-isOrder_placed.size();
+//        for(String key:order_db.keySet()){
+//
+//            if(isOrder_placed.containsKey(key)==false) countOfOrders +=1;
+//        }
 
         //Count of orders that have not been assigned to any DeliveryPartner
 
@@ -113,7 +110,7 @@ public class OrderRepository {
 
         for(String orderID:list){
 
-            if(Integer.parseInt(orderID) >= t) countOfOrders++;
+            if(Integer.parseInt(orderID) > t) countOfOrders++;
         }
 
         //countOfOrders that are left after a particular time of a DeliveryPartner

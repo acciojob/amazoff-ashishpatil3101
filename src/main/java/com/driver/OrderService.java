@@ -12,11 +12,10 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    @Autowired
-    OrderRepository order_repo ;
 
-    public OrderService() {
-    }
+    OrderRepository order_repo =new OrderRepository();
+
+
 
     //add order
     void addOrder(Order order){
